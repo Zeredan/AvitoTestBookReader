@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/data/auth" />
+            <option value="$PROJECT_DIR$/data/auth/impl" />
+            <option value="$PROJECT_DIR$/data/auth/impl/firebase" />
+            <option value="$PROJECT_DIR$/data/auth/mock" />
+            <option value="$PROJECT_DIR$/data/books" />
+            <option value="$PROJECT_DIR$/data/books/impl" />
+            <option value="$PROJECT_DIR$/data/books/impl/local" />
+            <option value="$PROJECT_DIR$/data/books/impl/local/files" />
+            <option value="$PROJECT_DIR$/data/books/impl/local/room" />
+            <option value="$PROJECT_DIR$/data/books/impl/remote" />
+            <option value="$PROJECT_DIR$/data/books/impl/remote/firestore" />
+            <option value="$PROJECT_DIR$/data/books/impl/remote/storage" />
+            <option value="$PROJECT_DIR$/data/books/mock" />
+            <option value="$PROJECT_DIR$/data/settings" />
+            <option value="$PROJECT_DIR$/data/settings/impl" />
+            <option value="$PROJECT_DIR$/data/settings/impl/datastore" />
+            <option value="$PROJECT_DIR$/data/settings/mock" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/domain/auth" />
+            <option value="$PROJECT_DIR$/domain/books" />
+            <option value="$PROJECT_DIR$/domain/settings" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/auth" />
+            <option value="$PROJECT_DIR$/feature/books" />
+            <option value="$PROJECT_DIR$/feature/profile" />
+            <option value="$PROJECT_DIR$/feature/reader" />
+            <option value="$PROJECT_DIR$/feature/splash" />
+            <option value="$PROJECT_DIR$/feature/uploader" />
+          </set>
+        </option>
+        <option name="resolveExternalAnnotations" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
