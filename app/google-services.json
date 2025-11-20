@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "197476711834",
+    "project_id": "avitotestbookreader",
+    "storage_bucket": "avitotestbookreader.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197476711834:android:c250b199034e63f1b50e23",
+        "android_client_info": {
+          "package_name": "test.task.avitotestbookreader"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9x5vN7r3ySIRUNW-tgIikE2rJvF4ouFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

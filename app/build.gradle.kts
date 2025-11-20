@@ -2,16 +2,19 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "test.task.avitotestbookreader"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "test.task.avitotestbookreader"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -40,15 +43,42 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
+
+    implementation(project(":feature"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:reader"))
+    implementation(project(":feature:uploader"))
+    implementation(project(":feature:splash"))
+
+    implementation(project(":domain:settings"))
+
+    implementation(project(":data:settings:impl"))
+    implementation(project(":data:books:impl"))
+    implementation(project(":data:auth:impl"))
+
+//    val flavorName = project.gradle.startParameter.taskNames.joinToString().let {
+//        when {
+//            it.contains("Mock", ignoreCase = true) -> "mock"
+//            it.contains("Real", ignoreCase = true) -> "real"
+//            else -> "real" // По умолчанию реальный
+//        }
+//    }
+//    when (flavorName) {
+//        "mock" -> implementation(project(":data:courses:mock"))
+//        "real" -> implementation(project(":data:courses:impl"))
+//    }
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,4 +86,23 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.analytics.ktx)
 }

@@ -4,4 +4,15 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.android.library) apply false
+    id("com.google.dagger.hilt.android") version "2.51.1" apply false
+    id("com.google.gms.google-services") version "4.4.4" apply false
+    /*alias(libs.plugins.google.gms.google.services) apply false
+    id("com.google.firebase.crashlytics") version "3.0.3" apply false*/
+}
+buildscript{
+    dependencies{
+        classpath(libs.hilt.android.gradle.plugin)
+        classpath(libs.google.services)
+        classpath(libs.firebase.crashlytics.gradle)
+    }
 }

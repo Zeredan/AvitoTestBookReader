@@ -1,11 +1,15 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+//    alias(libs.plugins.google.gms.google.services)
+//    id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "test.task.impl"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -33,11 +37,16 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":domain:auth"))
+    implementation(project(":data:auth:impl:firebase"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
 }
