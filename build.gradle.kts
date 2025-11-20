@@ -10,9 +10,4 @@ plugins {
     id("com.google.firebase.crashlytics") version "3.0.3" apply false*/
 }
 buildscript{
-    dependencies{
-        classpath(libs.hilt.android.gradle.plugin)
-        classpath(libs.google.services)
-        classpath(libs.firebase.crashlytics.gradle)
-    }
 }

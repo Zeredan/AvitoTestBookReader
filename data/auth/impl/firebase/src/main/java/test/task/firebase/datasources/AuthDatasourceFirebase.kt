@@ -1,27 +1,34 @@
 package test.task.firebase.datasources
 
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
+import test.task.auth.AuthState
+import test.task.auth.AuthUser
 import javax.inject.Inject
 
 class AuthDatasourceFirebase @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) {
 
-    override val authState: Flow<AuthState> =
+    fun getAuthStateAsFlow(): Flow<AuthState> =
         callbackFlow {
-            // Сразу отправляем Loading при старте
-            trySend(AuthState.Loading)
-
             val listener = FirebaseAuth.AuthStateListener { auth ->
                 val user = auth.currentUser
 
                 val newState =
                     if (user == null) {
-                        AuthState.NeedLogin
+                        AuthState.NeedAuth
                     } else {
                         AuthState.Success(
-                            AuthUser(uid = user.uid, email = user.email)
+                            AuthUser(
+                                uid = user.uid,
+                                email = user.email,
+                                displayName = user.displayName,
+                                photoUrl = user.photoUrl?.toString()
+                            )
                         )
                     }
 
@@ -35,15 +42,15 @@ class AuthDatasourceFirebase @Inject constructor(
             }
         }
 
-    override suspend fun login(email: String, password: String) {
+    suspend fun login(email: String, password: String) {
         firebaseAuth.signInWithEmailAndPassword(email, password).await()
     }
 
-    override suspend fun signup(email: String, password: String) {
+    suspend fun signup(email: String, password: String) {
         firebaseAuth.createUserWithEmailAndPassword(email, password).await()
     }
 
-    override suspend fun logout() {
+    suspend fun logout() {
         firebaseAuth.signOut()
     }
 }

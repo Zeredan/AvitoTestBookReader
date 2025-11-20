@@ -2,9 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics.gradle)
+
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -87,22 +90,23 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.firebase.config)
     implementation(libs.firebase.messaging)
-    implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.firebase.analytics.ktx)
+
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.crashlytics)
 }
