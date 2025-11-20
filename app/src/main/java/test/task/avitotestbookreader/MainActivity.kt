@@ -7,41 +7,50 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import test.task.avitotestbookreader.ui.theme.AvitoTestBookReaderTheme
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import test.task.avitotestbookreader.ui.MainNavigationRoot
+import test.task.settings.AvitoTheme
+import test.task.settings.usecases.UCGetAppThemeAsFlow
+import test.task.ui.themes.AvitoColorScheme
+import test.task.ui.themes.AvitoThemeManager
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var ucGetAppThemeAsFlow: UCGetAppThemeAsFlow
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            AvitoTestBookReaderTheme {
+        // Привязываю тему из domain-слоя, чтобы всегда в :core:ui была актуальная и реактивная тема
+        lifecycleScope.launch {
+            ucGetAppThemeAsFlow().collect { appTheme ->
+                AvitoThemeManager.colorScheme.value = when(appTheme){
+                    AvitoTheme.DARK -> AvitoColorScheme.DARK
+                    AvitoTheme.LIGHT -> AvitoColorScheme.LIGHT
+                }
+                AvitoThemeManager.colorScheme.value = when(appTheme){
+                    AvitoTheme.DARK -> AvitoColorScheme.DARK
+                    AvitoTheme.LIGHT -> AvitoColorScheme.LIGHT
+                }
+                AvitoThemeManager.isInitialized.value = true
+            }
+        }
+        // Жду инициализацию темы, лишь потом привязываю контент
+        lifecycleScope.launch {
+            AvitoThemeManager.isInitialized.first { it }
+            setContent {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    MainNavigationRoot(
+                        modifier = Modifier.padding(innerPadding),
+                        deferredsToWait = listOf()
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AvitoTestBookReaderTheme {
-        Greeting("Android")
     }
 }

@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":core:datastore"))
+    implementation(project(":domain:settings"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

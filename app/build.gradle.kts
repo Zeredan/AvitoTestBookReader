@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":feature:splash"))
 
     implementation(project(":domain:settings"))
+    implementation(project(":domain:auth"))
 
     implementation(project(":data:settings:impl"))
     implementation(project(":data:books:impl"))
