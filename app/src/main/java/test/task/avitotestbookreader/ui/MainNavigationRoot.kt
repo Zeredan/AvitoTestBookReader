@@ -8,12 +8,14 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -24,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import test.task.auth.AuthFeatureRoot
 import test.task.auth.AuthState
 import test.task.auth.AuthViewModel
 import test.task.ui.themes.AvitoThemeManager
@@ -76,10 +79,22 @@ fun MainNavigationRoot(
             }
         }
         composable(ScreenState.AUTH) {
-
+            AuthFeatureRoot(
+                vm = authViewModel,
+                onLoggedIn = {
+                    navController.navigate(ScreenState.BOOKS) {
+                        popUpTo(ScreenState.AUTH) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
         composable(ScreenState.BOOKS) {
-
+            Text(
+                text = "BOOKS",
+                color = Color.Red
+            )
         }
     }
 }
