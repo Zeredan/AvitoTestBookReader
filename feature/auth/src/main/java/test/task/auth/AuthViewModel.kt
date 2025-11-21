@@ -12,18 +12,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import test.task.auth.usecases.GetAuthStateUseCase
-import test.task.auth.usecases.LoginUseCase
+import test.task.auth.usecases.LoginOrSignUpUseCase
 import test.task.auth.usecases.LogoutUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val getAuthStateUseCase: GetAuthStateUseCase,
-    private val loginUseCase: LoginUseCase,
+    private val loginOrSignUpUseCase: LoginOrSignUpUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
-    val authState = getAuthStateUseCase()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, AuthState.Loading)
+    private val _authState = MutableStateFlow<AuthState>(AuthState.Loading)
+    val authState = _authState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            getAuthStateUseCase().collect { aS ->
+                _authState.value = aS
+            }
+        }
+    }
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
@@ -34,13 +42,15 @@ class AuthViewModel @Inject constructor(
     private val _isInputsValid = MutableStateFlow(false)
     val isInputsValid = _isInputsValid.asStateFlow()
 
-    fun logInWithInputs() {
+    fun logInOrSignUp() {
         viewModelScope.launch {
+            _authState.value = AuthState.Loading
             println("QQWE: email: ${email.value}, password: ${password.value}")
             try {
-                loginUseCase(email.value, password.value)
+                loginOrSignUpUseCase(email.value, password.value)
                 println("QQWE G")
             } catch (e: Exception) {
+                _authState.value = AuthState.Error(e.message ?: "Неизвестная ошибка")
                 print("QQWE E: $e")
             }
         }

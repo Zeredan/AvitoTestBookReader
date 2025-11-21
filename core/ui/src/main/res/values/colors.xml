@@ -14,4 +14,5 @@
     <color name="dark_main_text_special">#12B956</color>
     <color name="dark_horizontal_divider">#4D555E</color>
     <color name="dark_blurred_glass">#32333A4D</color>
+    <color name="dark_text_error">#C14040</color>
 </resources>

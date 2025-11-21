@@ -6,6 +6,7 @@ import test.task.ui.R
 enum class AvitoColorScheme(
     @ColorRes val bgPrimary: Int,
     @ColorRes val textPrimary: Int,
+    @ColorRes val textError: Int,
     @ColorRes val loginBgTextField: Int,
     @ColorRes val textTextField: Int,
     @ColorRes val loginLogin: Int,
@@ -23,6 +24,7 @@ enum class AvitoColorScheme(
     DARK(
         bgPrimary = R.color.dark_bg_primary,
         textPrimary = R.color.dark_text_primary,
+        textError = R.color.dark_text_error,
         loginBgTextField = R.color.dark_login_bg_textfield,
         textTextField = R.color.dark_text_textfield,
         loginLogin = R.color.dark_login_login,
@@ -39,6 +41,7 @@ enum class AvitoColorScheme(
     LIGHT(
         bgPrimary = R.color.dark_bg_primary,
         textPrimary = R.color.dark_text_primary,
+        textError = R.color.dark_text_error,
         loginBgTextField = R.color.dark_login_bg_textfield,
         textTextField = R.color.dark_text_textfield,
         loginLogin = R.color.dark_login_login,

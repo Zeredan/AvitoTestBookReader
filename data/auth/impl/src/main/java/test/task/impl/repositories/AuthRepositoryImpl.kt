@@ -13,6 +13,10 @@ class AuthRepositoryImpl @Inject constructor(
         authDatasourceFirebase.login(email, password)
     }
 
+    override suspend fun signUp(email: String, password: String) {
+        authDatasourceFirebase.signup(email, password)
+    }
+
     override suspend fun logout() {
         authDatasourceFirebase.logout()
     }

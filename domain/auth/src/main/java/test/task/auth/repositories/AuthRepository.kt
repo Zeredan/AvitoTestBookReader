@@ -6,6 +6,7 @@ import test.task.auth.AuthUser
 
 interface AuthRepository {
     suspend fun login(email: String, password: String)
+    suspend fun signUp(email: String, password: String)
     suspend fun logout()
 
     fun getAuthStateAsFlow(): Flow<AuthState>

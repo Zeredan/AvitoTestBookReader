@@ -78,8 +78,19 @@ fun AuthFeatureRoot(
                     strokeCap = StrokeCap.Round
                 )
             }
-        } else if (authState is AuthState.NeedAuth) {
+        } else if (authState !is AuthState.Success) {
             Spacer(Modifier.weight(1f))
+            if (authState is AuthState.Error) {
+                Text(
+                    modifier = Modifier.align(Alignment.Start),
+                    text = (authState as AuthState.Error).message,
+                    fontSize = 14.sp,
+                    lineHeight = 18.sp,
+                    color = colorResource(colorScheme.textPrimary),
+                    fontFamily = robotoFontFamily,
+                    fontWeight = FontWeight.W400,
+                )
+            }
             Text(
                 modifier = Modifier.align(Alignment.Start),
                 text = stringResource(R.string.log_in),
@@ -134,7 +145,7 @@ fun AuthFeatureRoot(
                     .run {
                         if (isInputValid) {
                             clickable {
-                                vm.logInWithInputs()
+                                vm.logInOrSignUp()
                             }
                         } else {
                             this
