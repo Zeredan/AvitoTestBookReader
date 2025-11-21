@@ -17,6 +17,10 @@ class BooksLocalMetadataDataSourceRoomImpl @Inject constructor(
         dao.updateBooks(books.map { it.toBookEntity() })
     }
 
+    override suspend fun addBook(book: Book) {
+        dao.insert(book.toBookEntity())
+    }
+
     override suspend fun getBooks(): List<Book> = dao.getAll().map { it.toBook() }
 
     override fun getBooksAsFlow(): Flow<List<Book>> = dao.getAllAsFlow().map { list ->

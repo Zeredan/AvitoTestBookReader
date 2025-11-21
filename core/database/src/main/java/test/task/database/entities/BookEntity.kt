@@ -8,7 +8,6 @@ data class BookEntity(
     @PrimaryKey val id: String,
     val title: String,
     val author: String,
-    val remoteFileUrl: String?,
     val localFilePath: String?,
     val readProgress: Float,
 )

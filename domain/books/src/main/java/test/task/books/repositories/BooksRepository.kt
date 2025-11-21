@@ -29,6 +29,6 @@ interface BooksRepository {
 
 sealed class DownloadProgress {
     data class Progress(val percent: Int) : DownloadProgress()
-    data class Success(val book: Book) : DownloadProgress()
+    data class Success(val book: File) : DownloadProgress()
     data class Error(val exception: Exception) : DownloadProgress()
 }

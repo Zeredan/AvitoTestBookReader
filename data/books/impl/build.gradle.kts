@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":domain:books"))
+    implementation(project(":domain:auth"))
     implementation(project(":data:books:impl:datasources"))
     implementation(project(":data:books:impl:datasources:localfiles"))
     implementation(project(":data:books:impl:datasources:room"))
