@@ -1,4 +1,4 @@
-package test.task.effectivemobile.database.di
+package test.task.database.di
 
 import android.content.Context
 import androidx.room.Room
@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import test.task.database.AvitoDatabase
-import test.task.effectivemobile.database.dao.CoursesDAO
+import test.task.database.dao.BooksDAO
 import javax.inject.Singleton
 
 @Module
@@ -17,29 +17,21 @@ class DatabaseRoomHiltModule {
 
     @Provides
     @Singleton
-    fun provideCharactersDatabase(
+    fun provideAvitoDatabase(
         @ApplicationContext appContext: Context
     ) : AvitoDatabase {
         return Room.databaseBuilder(
             appContext,
             AvitoDatabase::class.java,
-            "courses_database"
+            "books_database"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideCoursesDAO(
+    fun provideBooksDAO(
         database: AvitoDatabase
-    ) : CoursesDAO {
-        return database.coursesDao
-    }
-
-    @Provides
-    @Singleton
-    fun provideFavoriteCoursesDAO(
-        database: AvitoDatabase
-    ) : FavoriteCoursesDAO {
-        return database.favoriteCoursesDao
+    ) : BooksDAO {
+        return database.booksDao()
     }
 }

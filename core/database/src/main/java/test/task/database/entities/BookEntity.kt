@@ -7,14 +7,8 @@ import androidx.room.PrimaryKey
 data class BookEntity(
     @PrimaryKey val id: String,
     val title: String,
-    val author: String?,
-    val remoteUrl: String?,
-    val localPath: String?,
-    val format: String,
-    val coverUri: String?,
-    val uploadedBy: String?,
-    val updatedAt: Long
+    val author: String,
+    val remoteFileUrl: String?,
+    val localFilePath: String?,
+    val readProgress: Float,
 )
-
-//fun BookEntity.toDomain() = Book(id, title, author, remoteUrl, localPath, BookFormat.valueOf(format), coverUri, uploadedBy, updatedAt)
-//fun Book.toEntity() = BookEntity(id, title, author, remoteUrl, localPath, format.name, coverUri, uploadedBy, updatedAt)

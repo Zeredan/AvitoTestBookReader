@@ -3,25 +3,25 @@ package test.task.impl.repositories
 import kotlinx.coroutines.flow.Flow
 import test.task.auth.AuthState
 import test.task.auth.repositories.AuthRepository
-import test.task.firebase.datasources.AuthDatasourceFirebase
+import test.task.datasources.AuthDatasource
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authDatasourceFirebase: AuthDatasourceFirebase
+    private val authDatasource: AuthDatasource
 ) : AuthRepository {
     override suspend fun login(email: String, password: String) {
-        authDatasourceFirebase.login(email, password)
+        authDatasource.login(email, password)
     }
 
     override suspend fun signUp(email: String, password: String) {
-        authDatasourceFirebase.signup(email, password)
+        authDatasource.signup(email, password)
     }
 
     override suspend fun logout() {
-        authDatasourceFirebase.logout()
+        authDatasource.logout()
     }
 
     override fun getAuthStateAsFlow(): Flow<AuthState> {
-        return authDatasourceFirebase.getAuthStateAsFlow()
+        return authDatasource.getAuthStateAsFlow()
     }
 }

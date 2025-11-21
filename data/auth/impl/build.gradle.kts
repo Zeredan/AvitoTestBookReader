@@ -38,7 +38,8 @@ android {
 
 dependencies {
     implementation(project(":domain:auth"))
-    implementation(project(":data:auth:impl:firebase"))
+    implementation(project(":data:auth:impl:datasources"))
+    implementation(project(":data:auth:impl:datasources:firebase"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

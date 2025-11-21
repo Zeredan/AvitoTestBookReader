@@ -18,6 +18,8 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/auth" />
             <option value="$PROJECT_DIR$/data/auth/impl" />
+            <option value="$PROJECT_DIR$/data/auth/impl/datasources" />
+            <option value="$PROJECT_DIR$/data/auth/impl/datasources/firebase" />
             <option value="$PROJECT_DIR$/data/auth/impl/firebase" />
             <option value="$PROJECT_DIR$/data/auth/mock" />
             <option value="$PROJECT_DIR$/data/books" />
@@ -31,6 +33,8 @@
             <option value="$PROJECT_DIR$/data/books/mock" />
             <option value="$PROJECT_DIR$/data/settings" />
             <option value="$PROJECT_DIR$/data/settings/impl" />
+            <option value="$PROJECT_DIR$/data/settings/impl/datasources" />
+            <option value="$PROJECT_DIR$/data/settings/impl/datasources/datastore" />
             <option value="$PROJECT_DIR$/data/settings/impl/datastore" />
             <option value="$PROJECT_DIR$/data/settings/mock" />
             <option value="$PROJECT_DIR$/domain" />

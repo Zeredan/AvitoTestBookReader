@@ -36,10 +36,11 @@ android {
 
 dependencies {
     implementation(project(":domain:books"))
-    implementation(project(":data:books:impl:local:files"))
-    implementation(project(":data:books:impl:local:room"))
-    implementation(project(":data:books:impl:remote:firestore"))
-    implementation(project(":data:books:impl:remote:storage"))
+    implementation(project(":data:books:impl:datasources"))
+    implementation(project(":data:books:impl:datasources:localfiles"))
+    implementation(project(":data:books:impl:datasources:room"))
+    implementation(project(":data:books:impl:datasources:firestore"))
+    implementation(project(":data:books:impl:datasources:firebase_storage"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
