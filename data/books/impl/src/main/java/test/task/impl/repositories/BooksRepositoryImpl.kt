@@ -2,6 +2,7 @@ package test.task.impl.repositories
 
 import android.content.Context
 import android.net.Uri
+import androidx.annotation.FloatRange
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -48,7 +49,10 @@ class BooksRepositoryImpl @Inject constructor(
                             remoteMetaDs.getBooksAsFlow(uid),
                             localMetaDs.getBooksAsFlow()
                         ) { remote, local ->
-
+                            val localErrors = local.filter {
+                                it.localPath == null || localFilesDs.getFile(it.localPath!!) == null
+                            }
+                            if (localErrors.isNotEmpty()) localMetaDs.deleteBooks(localErrors.map { it.id })
                             val localExisting = local.filter {
                                 it.localPath != null &&
                                         localFilesDs.getFile(it.localPath!!) != null
@@ -96,7 +100,11 @@ class BooksRepositoryImpl @Inject constructor(
         fileUri: Uri
     ): Result<Book> = withContext(ioDispatcher) {
         try {
-            val fileName = "${title}_${author ?: "Неизвестный автор"}"
+            val mime = appContext.contentResolver.getType(fileUri)
+            val format = mime?.let { BookFormat.fromMimeType(it) } ?: BookFormat.TXT
+            val ext = BookFormat.toExt(format)
+
+            val fileName = "${title}_${author ?: "Неизвестный автор"}.$ext"
 
             val uid = when (val auth = authRepository.getAuthStateAsFlow().first()) {
                 is AuthState.Success -> auth.user.uid
@@ -147,10 +155,10 @@ class BooksRepositoryImpl @Inject constructor(
         val remoteUrl = book.remoteUrl
             ?: return@flow emit(DownloadProgress.Error(IllegalStateException("Book has no remoteUrl")))
 
-        val ext = remoteUrl.substringAfterLast('.', book.format.name.lowercase())
+        val ext = BookFormat.toExt(book.format)
 
         val directory = localFilesDs.getBooksDirectory()
-        val targetFile = File(directory, "${book.id}.$ext")
+        val targetFile = File(directory, "${book.title}.$ext")
 
         remoteFileDs.downloadFile(
             fileUrl = remoteUrl,
@@ -202,7 +210,7 @@ class BooksRepositoryImpl @Inject constructor(
 
         val auth = authRepository.getAuthStateAsFlow().first()
         val remote = if (auth is AuthState.Success) {
-            remoteMetaDs.getBooks()
+            remoteMetaDs.getBooks(auth.user.uid)
                 .filter { it.title.contains(query, true) || (it.author?.contains(query, true) ?: false) }
         } else {
             emptyList()
@@ -217,16 +225,36 @@ class BooksRepositoryImpl @Inject constructor(
 
     override suspend fun getBookFile(book: Book): File? {
         val path = book.localPath ?: return null
-        return localFilesDs.getFile(path)
+        val file = localFilesDs.getFile(path)
+
+        if (file == null) {
+            localMetaDs.deleteBook(book.id)
+        }
+
+        return file
     }
 
-    override suspend fun saveReadingProgress(bookId: String, progress: Float) {
+    override suspend fun saveReadingProgress(bookId: String, @FloatRange(from = 0.0, to = 1.0) progress: Float) {
         val book = localMetaDs.getBookById(bookId) ?: return
-        val updated = book.copy(readProgress = progress)
-        localMetaDs.updateBook(updated)
+
+        val file = book.localPath?.let { localFilesDs.getFile(it) } ?: run {
+            localMetaDs.deleteBook(bookId)
+            return
+        }
+
+        val safeProgress = progress.coerceIn(0f, 1f)
+        localMetaDs.updateBook(book.copy(readProgress = safeProgress))
     }
 
     override suspend fun getReadingProgress(bookId: String): Float {
-        return localMetaDs.getBookById(bookId)?.readProgress ?: 0f
+        val book = localMetaDs.getBookById(bookId) ?: return 0f
+
+        val file = book.localPath?.let { localFilesDs.getFile(it) }
+        if (file == null) {
+            localMetaDs.deleteBook(bookId)
+            return 0f
+        }
+
+        return book.readProgress
     }
 }

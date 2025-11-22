@@ -32,6 +32,9 @@ class BooksLocalMetadataDataSourceRoomImpl @Inject constructor(
     override suspend fun updateBook(book: Book) = dao.update(book.toBookEntity())
 
     override suspend fun deleteBook(bookId: String) = dao.delete(bookId)
+    override suspend fun deleteBooks(bookIds: List<String>) {
+        dao.deleteList(bookIds)
+    }
 
     override suspend fun searchBooks(query: String): List<Book> = dao.search(query).map { it.toBook() }
 }

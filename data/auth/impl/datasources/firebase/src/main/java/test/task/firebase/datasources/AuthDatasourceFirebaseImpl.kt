@@ -19,19 +19,18 @@ class AuthDatasourceFirebaseImpl @Inject constructor(
             val listener = FirebaseAuth.AuthStateListener { auth ->
                 val user = auth.currentUser
 
-                val newState =
-                    if (user == null) {
-                        AuthState.NeedAuth
-                    } else {
-                        AuthState.Success(
-                            AuthUser(
-                                uid = user.uid,
-                                email = user.email,
-                                displayName = user.displayName,
-                                photoUrl = user.photoUrl?.toString()
-                            )
+                val newState = if (user == null) {
+                    AuthState.NeedAuth
+                } else {
+                    AuthState.Success(
+                        AuthUser(
+                            uid = user.uid,
+                            email = user.email,
+                            displayName = user.displayName,
+                            photoUrl = user.photoUrl?.toString()
                         )
-                    }
+                    )
+                }
 
                 trySend(newState)
             }

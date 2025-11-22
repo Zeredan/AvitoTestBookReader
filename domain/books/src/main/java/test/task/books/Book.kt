@@ -16,6 +16,12 @@ enum class BookFormat {
     PDF;
 
     companion object {
+        fun toExt(format: BookFormat): String = when (format) {
+            TXT -> "txt"
+            EPUB -> "epub"
+            PDF -> "pdf"
+        }
+
         fun fromPath(path: String): BookFormat? {
             val extension = path.substringAfterLast('.', "")
             return fromExtension(extension)

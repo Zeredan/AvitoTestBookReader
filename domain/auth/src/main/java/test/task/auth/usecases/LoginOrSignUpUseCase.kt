@@ -10,12 +10,12 @@ class LoginOrSignUpUseCase @Inject constructor(
         try {
             authRepository.login(email, password)
             return
-        } catch (loginException: Exception) {
+        } catch (e: Exception) {
         }
 
         try {
             authRepository.signUp(email, password)
-        } catch (signUpException: Exception) {
+        } catch (e: Exception) {
             throw Exception("error logging in or signing up")
         }
     }

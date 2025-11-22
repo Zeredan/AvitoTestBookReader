@@ -12,5 +12,6 @@ interface BooksLocalMetadataDataSource {
     suspend fun getBookById(bookId: String): Book?
     suspend fun updateBook(book: Book)
     suspend fun deleteBook(bookId: String)
+    suspend fun deleteBooks(bookIds: List<String>)
     suspend fun searchBooks(query: String): List<Book>
 }
