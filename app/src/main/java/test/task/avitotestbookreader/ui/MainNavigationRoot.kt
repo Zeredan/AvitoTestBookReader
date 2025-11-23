@@ -165,9 +165,10 @@ fun MainNavigationRoot(
                 },
                 onLogout = {
                     navController.navigate(ScreenState.AUTH) {
-                        popUpTo(ScreenState.BOOKS) {
+                        popUpTo(0) {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 }
             )
