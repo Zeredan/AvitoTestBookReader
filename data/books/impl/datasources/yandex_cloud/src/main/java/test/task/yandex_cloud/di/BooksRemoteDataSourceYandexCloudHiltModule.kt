@@ -6,8 +6,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import test.task.datasources.BooksRemoteDataSource
+import test.task.yandex_cloud.YandexStorageConfig
 import test.task.yandex_cloud.datasources.BooksRemoteDataSourceYandexCloudImpl
-import test.task.yandex_cloud.datasources.YandexStorageConfig
+import java.net.URI
 import javax.inject.Singleton
 
 @Module
@@ -23,8 +24,9 @@ abstract class BooksRemoteDataSourceYandexCloudHiltModule {
 class BooksRemoteDataSourceYandexCloudHiltModule2 {
     @Provides
     fun provideYandexConfig(): YandexStorageConfig = YandexStorageConfig(
-        bucket = "your-bucket-name",
-        accessKey = "YOUR_ACCESS_KEY",
-        secretKey = "YOUR_SECRET_KEY"
+        region = "ru-central1",
+        bucket = "books-avito",
+        accessKey = "YCAJEIZARAqPNoKvT5z9xbD2u", //да-да, можно хранить как-то иначе, в файлах
+        secretKey = "YCPgSfA3JL_b-ZYozX5SyfNOdTNeqZbEz-5Jq0xX"
     )
 }

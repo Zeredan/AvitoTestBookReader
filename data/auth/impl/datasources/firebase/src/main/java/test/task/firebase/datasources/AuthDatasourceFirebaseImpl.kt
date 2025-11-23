@@ -68,6 +68,7 @@ class AuthDatasourceFirebaseImpl @Inject constructor(
         photoUrl: String?,
         phoneNumber: String
     ): Result<Unit> {
+        println("UUUU: updating user:    $name ||| $photoUrl ||| $phoneNumber")
         val user = firebaseAuth.currentUser ?: return Result.failure(Exception("Not logged in"))
 
         val request = userProfileChangeRequest {

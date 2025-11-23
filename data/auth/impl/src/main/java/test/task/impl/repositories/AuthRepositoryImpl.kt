@@ -34,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor(
     ): Result<Unit> {
         val auth = authDatasource.getAuthStateAsFlow().first()
         if (auth is AuthState.Success) {
-            val result = booksRemoteDataSource.uploadFile(Uri.parse(photoUrl), auth.user.uid, photoUrl ?: "profile_photo")
+            val result = booksRemoteDataSource.uploadFile(Uri.parse(photoUrl), auth.user.uid, photoUrl?.substringAfterLast('/')?.takeLast(10) ?: "profile_photo")
             return if (result.isSuccess) {
                 authDatasource.updateUserProfile(name, result.getOrNull()?.url, phoneNumber)
             } else {

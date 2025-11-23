@@ -49,5 +49,13 @@ dependencies {
 
     //implementation(libs.s3)
     //implementation(libs.aws.android.sdk.core)
-    implementation(libs.aws.android.sdk.s3)
+    //implementation(libs.aws.android.sdk.s3)
+
+    //implementation("software.amazon.awssdk:s3:2.25.0")
+    //implementation("software.amazon.awssdk:auth:2.25.0")
+
+    //implementation("io.minio:minio-android:8.4.3")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okio:okio:3.7.0")
 }
