@@ -364,7 +364,7 @@ fun ReaderFeatureRoot(
                                         }
                                     },
                                     onClick = {
-                                        vm.setFontSize(rowIntervalItem)
+                                        vm.setRowInterval(rowIntervalItem)
                                         rowIntervalExpanded = false
                                     }
                                 )
