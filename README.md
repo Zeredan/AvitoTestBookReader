@@ -48,4 +48,4 @@
 -   Hilt - Dependency Injection
 -   DataStore - хранение настроек
 
-Видео с моим приложением: 
+Видео с моим приложением: https://youtu.be/bIzXe0Zw0D0
