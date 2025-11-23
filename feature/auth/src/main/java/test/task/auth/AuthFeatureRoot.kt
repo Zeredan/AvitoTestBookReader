@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import test.task.ui.themes.AvitoThemeManager
 import test.task.ui.R
+import test.task.ui.composables.GoogleButton
 import test.task.ui.composables.LoginInputTextField
 import test.task.ui.composables.ODNOKLButton
 import test.task.ui.composables.VKButton
@@ -66,41 +67,53 @@ fun AuthFeatureRoot(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (authState is AuthState.Loading) {
-            Box(
-                modifier = Modifier.fillMaxHeight(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(60.dp),
-                    color = colorResource(colorScheme.mainBgElement),
-                    strokeWidth = 3.dp,
-                    strokeCap = StrokeCap.Round
-                )
-            }
-        } else if (authState !is AuthState.Success) {
-            Spacer(Modifier.weight(1f))
-            if (authState is AuthState.Error) {
-                Text(
-                    modifier = Modifier.align(Alignment.Start),
-                    text = (authState as AuthState.Error).message,
-                    fontSize = 14.sp,
-                    lineHeight = 18.sp,
-                    color = colorResource(colorScheme.textPrimary),
-                    fontFamily = robotoFontFamily,
-                    fontWeight = FontWeight.W400,
-                )
-            }
+        Row(
+            modifier = Modifier
+                .height(56.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Text(
-                modifier = Modifier.align(Alignment.Start),
-                text = stringResource(R.string.log_in),
-                fontSize = 28.sp,
-                lineHeight = 38.sp,
+                text = stringResource(R.string.log_in_title),
+                fontSize = 22.sp,
                 color = colorResource(colorScheme.textPrimary),
                 fontFamily = robotoFontFamily,
                 fontWeight = FontWeight.W400,
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(5.dp))
+                    .height(36.dp)
+                    .background(colorResource(colorScheme.registerBg))
+                    .clickable {
+
+                    }
+                    .padding(5.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.registration),
+                    fontSize = 16.sp,
+                    color = colorResource(colorScheme.textPrimary),
+                    fontFamily = robotoFontFamily,
+                    fontWeight = FontWeight.W500,
+                )
+            }
+        }
+        if (authState !is AuthState.Success) {
+            Spacer(Modifier.weight(1f))
+            if (authState is AuthState.Error) {
+                Text(
+                    modifier = Modifier.align(Alignment.Start).padding(bottom = 12.dp),
+                    text = (authState as AuthState.Error).message,
+                    fontSize = 14.sp,
+                    lineHeight = 18.sp,
+                    color = colorResource(colorScheme.textError),
+                    fontFamily = robotoFontFamily,
+                    fontWeight = FontWeight.W400,
+                )
+            }
             Text(
                 modifier = Modifier.align(Alignment.Start),
                 text = stringResource(R.string.email),
@@ -141,7 +154,7 @@ fun AuthFeatureRoot(
                     .fillMaxWidth()
                     .height(40.dp)
                     .clip(RoundedCornerShape(30.dp))
-                    .background(colorResource(if (isInputValid) colorScheme.loginLogin else colorScheme.loginLoginDisabled))
+                    .background(colorResource(if (isInputValid) colorScheme.logInBgActive else colorScheme.logInBgInactive))
                     .run {
                         if (isInputValid) {
                             clickable {
@@ -153,42 +166,30 @@ fun AuthFeatureRoot(
                     },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(R.string.log_in),
-                    fontSize = 15.sp,
-                    lineHeight = 18.sp,
-                    color = colorResource(colorScheme.textPrimary),
-                    fontFamily = robotoFontFamily,
-                    fontWeight = FontWeight.W500
-                )
+                if (authState is AuthState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(30.dp),
+                        color = colorResource(colorScheme.loadingIndicator),
+                        strokeWidth = 3.dp,
+                        strokeCap = StrokeCap.Round
+                    )
+                } else {
+                    Text(
+                        text = stringResource(R.string.log_in),
+                        fontSize = 15.sp,
+                        lineHeight = 18.sp,
+                        color = colorResource(colorScheme.textPrimary),
+                        fontFamily = robotoFontFamily,
+                        fontWeight = FontWeight.W500
+                    )
+                }
             }
             Spacer(Modifier.height(16.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.no_account),
-                    fontSize = 12.sp,
-                    lineHeight = 15.sp,
-                    color = colorResource(colorScheme.textPrimary),
-                    fontFamily = robotoFontFamily,
-                    fontWeight = FontWeight.W600
-                )
-                Text(
-                    text = stringResource(R.string.registration),
-                    fontSize = 12.sp,
-                    lineHeight = 15.sp,
-                    color = colorResource(colorScheme.loginLogin),
-                    fontFamily = robotoFontFamily,
-                    fontWeight = FontWeight.W600
-                )
-            }
-            Spacer(Modifier.height(8.dp))
             Text(
                 text = stringResource(R.string.forgot_pwd),
                 fontSize = 15.sp,
                 lineHeight = 18.sp,
-                color = colorResource(colorScheme.loginLogin),
+                color = colorResource(colorScheme.textPrimary),
                 fontFamily = robotoFontFamily,
                 fontWeight = FontWeight.W600
             )
@@ -196,12 +197,21 @@ fun AuthFeatureRoot(
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 thickness = 1.dp,
-                color = colorResource(colorScheme.horizontalDivider)
+                color = colorResource(colorScheme.navDivider)
             )
             Spacer(Modifier.height(32.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
+                GoogleButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(40.dp),
+                    onClick = {
+                        vm.moveToVK(context)
+                    }
+                )
+                Spacer(Modifier.width(16.dp))
                 VKButton(
                     modifier = Modifier
                         .weight(1f)

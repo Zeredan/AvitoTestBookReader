@@ -39,15 +39,15 @@ fun LoginInputTextField(
         modifier = modifier
             .height(40.dp)
             .clip(RoundedCornerShape(30.dp))
-            .background(colorResource(colorScheme.loginBgTextField))
+            .background(colorResource(colorScheme.textFieldBg))
             .padding(horizontal = 16.dp, vertical = 10.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            textStyle = TextStyle(fontSize = 15.sp, color = colorResource(colorScheme.textTextField)),
-            cursorBrush = SolidColor(colorResource(colorScheme.textTextField)),
+            textStyle = TextStyle(fontSize = 15.sp, color = colorResource(colorScheme.textPrimary)),
+            cursorBrush = SolidColor(colorResource(colorScheme.textPrimary)),
             visualTransformation = if (hideSymbol != null) PasswordVisualTransformation(hideSymbol) else VisualTransformation.None,
             modifier = Modifier.fillMaxSize()
         )
@@ -55,7 +55,7 @@ fun LoginInputTextField(
             Text(
                 text = placeholder,
                 fontSize = 15.sp,
-                color = colorResource(colorScheme.textTextField),
+                color = colorResource(colorScheme.textSecondary),
                 fontFamily = robotoFontFamily,
                 fontWeight = FontWeight.W500
             )

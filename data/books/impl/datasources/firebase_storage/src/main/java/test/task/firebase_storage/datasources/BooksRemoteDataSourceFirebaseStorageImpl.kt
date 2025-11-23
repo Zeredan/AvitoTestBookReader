@@ -41,8 +41,8 @@ class BooksRemoteDataSourceFirebaseStorageImpl @Inject constructor(
             val task = ref.getFile(destination)
             task.addOnProgressListener { snap ->
                 val percent = if (snap.totalByteCount > 0)
-                    (100 * snap.bytesTransferred / snap.totalByteCount).toInt()
-                else 0
+                    snap.bytesTransferred.toFloat() / snap.totalByteCount
+                else 0f
                 trySend(DownloadProgress.Progress(percent))
             }.addOnSuccessListener {
                 trySend(DownloadProgress.Success(destination))

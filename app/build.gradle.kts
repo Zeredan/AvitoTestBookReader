@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -43,17 +45,19 @@ android {
     buildFeatures {
         compose = true
     }
+
 }
 
 dependencies {
     implementation(project(":core:ui"))
 
     implementation(project(":feature"))
-    implementation(project(":feature:auth"))
-    implementation(project(":feature:profile"))
-    implementation(project(":feature:reader"))
-    implementation(project(":feature:uploader"))
     implementation(project(":feature:splash"))
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:books"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:uploader"))
+    implementation(project(":feature:reader"))
 
     implementation(project(":domain:settings"))
     implementation(project(":domain:auth"))
@@ -112,4 +116,5 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.appcheck.playintegrity)
+
 }

@@ -30,8 +30,8 @@ fun ODNOKLButton(
     val colorScheme by AvitoThemeManager.colorScheme.collectAsState()
     val iconScheme by AvitoThemeManager.iconScheme.collectAsState()
 
-    val startColor = colorResource(colorScheme.odnoklLbBackground)
-    val endColor = colorResource(colorScheme.odnoklRtBackground)
+    val startColor = colorResource(colorScheme.logInOkBg1_lb)
+    val endColor = colorResource(colorScheme.logInOkBg2_rt)
 
     Box(
         modifier = modifier

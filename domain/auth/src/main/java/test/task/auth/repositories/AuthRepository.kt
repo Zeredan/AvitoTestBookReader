@@ -10,4 +10,10 @@ interface AuthRepository {
     suspend fun logout()
 
     fun getAuthStateAsFlow(): Flow<AuthState>
+
+    suspend fun updateUserProfile(
+        name: String,
+        photoUrl: String?,
+        phoneNumber: String,
+    ): Result<Unit>
 }

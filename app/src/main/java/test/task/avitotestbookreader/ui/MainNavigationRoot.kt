@@ -29,7 +29,13 @@ import kotlinx.coroutines.launch
 import test.task.auth.AuthFeatureRoot
 import test.task.auth.AuthState
 import test.task.auth.AuthViewModel
+import test.task.books.BooksFeatureRoot
+import test.task.profile.ProfileFeatureRoot
+import test.task.profile.ProfileViewModel
+import test.task.reader.ReaderFeatureRoot
+import test.task.splash.SplashFeatureRoot
 import test.task.ui.themes.AvitoThemeManager
+import test.task.uploader.UploaderFeatureRoot
 import java.util.Locale
 
 @SuppressLint("NewApi", "ContextCastToActivity")
@@ -42,17 +48,18 @@ fun MainNavigationRoot(
     val navController = rememberNavController()
     // Создаю вьюмодели тут, а не внутри фичи - для предотвращения мерцания UI и пре-расчетов
     val authViewModel: AuthViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
     val colorScheme by AvitoThemeManager.colorScheme.collectAsState()
 
     //val selectedLanguage by settingsViewModel.selectedLanguageStateFlow.collectAsState()
     val activity = LocalContext.current as ComponentActivity
 
-    //activity.window.navigationBarColor = colorResource(colorScheme.bgPrimary).toArgb()
-    //activity.window.statusBarColor = colorResource(colorScheme.bgPrimary).toArgb()
+    activity.window.navigationBarColor = colorResource(colorScheme.bgPrimary).toArgb()
+    activity.window.statusBarColor = colorResource(colorScheme.bgPrimary).toArgb()
     NavHost(
         modifier = modifier
-            .fillMaxSize(),
-            //.background(colorResource(colorScheme.bgPrimary)),
+            .fillMaxSize()
+            .background(colorResource(colorScheme.bgPrimary)),
         navController = navController,
         startDestination = ScreenState.SPLASH,
         enterTransition = {
@@ -62,7 +69,6 @@ fun MainNavigationRoot(
             fadeOut(tween(0))
         }
     ) {
-        // не реализовываю сам экран, только функционал с выжиданием
         composable(ScreenState.SPLASH) {
             LaunchedEffect(1) {
                 coroutineScope.launch {
@@ -77,6 +83,9 @@ fun MainNavigationRoot(
                     }
                 }
             }
+            SplashFeatureRoot(
+
+            )
         }
         composable(ScreenState.AUTH) {
             AuthFeatureRoot(
@@ -91,9 +100,79 @@ fun MainNavigationRoot(
             )
         }
         composable(ScreenState.BOOKS) {
-            Text(
-                text = "BOOKS",
-                color = Color.Red
+            BooksFeatureRoot(
+                navigateToUploader = {
+                    navController.navigate(ScreenState.UPLOADER) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = false
+                        }
+                    }
+                },
+                navigateToProfile = {
+                    navController.navigate(ScreenState.PROFILE) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = false
+                        }
+                    }
+                },
+                onBookClick = { id ->
+                    navController.navigate(ScreenState.READER) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = false
+                        }
+                    }
+                }
+            )
+        }
+        composable(ScreenState.UPLOADER) {
+            UploaderFeatureRoot(
+                navigateToProfile = {
+                    navController.navigate(ScreenState.PROFILE) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = false
+                        }
+                    }
+                },
+                navigateToBooks = {
+                    navController.navigate(ScreenState.BOOKS) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = false
+                        }
+                    }
+                }
+            )
+        }
+        composable(ScreenState.PROFILE) {
+            ProfileFeatureRoot(
+                vm = profileViewModel,
+                navigateToBooks = {
+                    navController.navigate(ScreenState.BOOKS) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = true
+                        }
+                    }
+                },
+                navigateToUploader = {
+                    navController.navigate(ScreenState.UPLOADER) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = false
+                        }
+                    }
+                },
+                onLogout = {
+                    navController.navigate(ScreenState.AUTH) {
+                        popUpTo(ScreenState.BOOKS) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable(ScreenState.READER) {
+            ReaderFeatureRoot(
+                onBack = {
+                    navController.navigateUp()
+                }
             )
         }
     }

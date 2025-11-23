@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="log_in">Вход</string>
+    <!-- COMMON -->
+    <string name="menu_profile">Профиль</string>
+    <string name="menu_books">Книги</string>
+    <string name="menu_uploader">Загрузить</string>
+    <!-- AUTH -->
+    <string name="log_in_title">Вход в Аккаунт</string>
+    <string name="registration">Регистрация</string>
     <string name="email">Email</string>
     <string name="email_placeholder">example@gmail.com</string>
     <string name="password">Пароль</string>
-    <string name="password_placeholder">Введите пароль</string>
-    <string name="no_account">Нет аккаунта?</string>
-    <string name="registration">Регистрация</string>
+    <string name="password_placeholder">Введите пароль (6+ символов)</string>
     <string name="forgot_pwd">Забыли пароль?</string>
-    <string name="main">Главная</string>
-    <string name="favorite">Избранное</string>
-    <string name="account">Аккаунт</string>
+    <string name="log_in">Войти</string>
+    <!-- UPLOADER -->
+    <string name="upload_title">Загрузка книги</string>
+    <string name="chose_file">Выбрать файл</string>
+    <string name="book_title">Название книги</string>
+    <string name="book_title_placeholder">Введите название книги</string>
+    <string name="author">Автор</string>
+    <string name="author_unknown">Неизвестный Автор</string>
+    <string name="author_placeholder">Введите автора</string>
+    <string name="upload">Загрузить</string>
+    <string name="upload_progress">Прогресс загрузки</string>
+    <string name="upload_repeat">Повторить</string>
+    <!-- BOOKS -->
+    <string name="my_books_title">Мои книги</string>
+    <string name="search_books">Поиск книг…</string>
+    <string name="search_nothing">Ничего не найдено</string>
+    <string name="file_deleted">Файл удален</string>
+    <string name="file_downloaded">Файл скачан</string>
+    <string name="books_load_repeat">Повторить</string>
+    <!-- READER -->
+    <string name="app_theme">Тема приложения</string>
+    <string name="font_size">Размер шрифта</string>
+    <string name="lines_interval">Интервал между строк</string>
+    <!-- PROFILE -->
+    <string name="profile_title">Профиль</string>
+    <string name="photo_upload">Загрузить фото</string>
+    <string name="logout">Выйти из аккаунта</string>
+    <string name="email_profile">Email</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="nickname">Имя пользователя</string>
+    <string name="edit">Редактировать</string>
+    <string name="save_changes">Сохранить изменения</string>
 </resources>

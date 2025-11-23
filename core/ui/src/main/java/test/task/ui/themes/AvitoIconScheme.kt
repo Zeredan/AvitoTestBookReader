@@ -19,9 +19,16 @@ enum class AvitoIconScheme(
     @DrawableRes val iconOdnokl: Int,
     @DrawableRes val iconProfileActive: Int,
     @DrawableRes val iconProfileInactive: Int,
+    @DrawableRes val iconUploadActive: Int,
+    @DrawableRes val iconUploadInactive: Int,
     @DrawableRes val iconSearch: Int,
     @DrawableRes val iconVk: Int,
-    @DrawableRes val iconStar: Int
+    @DrawableRes val iconGoogle: Int,
+    @DrawableRes val iconLogo: Int,
+    @DrawableRes val iconStar: Int,
+    @DrawableRes val iconDelete: Int,
+    @DrawableRes val iconDownload: Int,
+    @DrawableRes val iconProfilePlaceholder: Int,
 ) {
     DARK(
         iconActiveFavorite = R.drawable.dark_active_favorite,
@@ -41,7 +48,14 @@ enum class AvitoIconScheme(
         iconProfileInactive = R.drawable.dark_account_inactive,
         iconSearch = R.drawable.dark_search,
         iconVk = R.drawable.dark_vk,
-        iconStar = R.drawable.dark_star
+        iconGoogle = R.drawable.dark_google,
+        iconLogo = R.drawable.books_logo,
+        iconStar = R.drawable.dark_star,
+        iconUploadActive = R.drawable.dark_upload_active,
+        iconUploadInactive = R.drawable.dark_upload,
+        iconDelete = R.drawable.dark_delete,
+        iconDownload = R.drawable.dark_download,
+        iconProfilePlaceholder = R.drawable.dark_account_active
     ),
     LIGHT(
         iconActiveFavorite = R.drawable.dark_active_favorite,
@@ -61,6 +75,13 @@ enum class AvitoIconScheme(
         iconProfileInactive = R.drawable.dark_account_inactive,
         iconSearch = R.drawable.dark_search,
         iconVk = R.drawable.dark_vk,
-        iconStar = R.drawable.dark_star
+        iconGoogle = R.drawable.dark_google,
+        iconLogo = R.drawable.books_logo,
+        iconStar = R.drawable.dark_star,
+        iconUploadActive = R.drawable.dark_upload_active,
+        iconUploadInactive = R.drawable.light_upload,
+        iconDelete = R.drawable.light_delete,
+        iconDownload = R.drawable.light_download,
+        iconProfilePlaceholder = R.drawable.dark_account_active
     )
 }

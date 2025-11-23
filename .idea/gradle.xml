@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/data/books/impl/datasources/firestore" />
             <option value="$PROJECT_DIR$/data/books/impl/datasources/localfiles" />
             <option value="$PROJECT_DIR$/data/books/impl/datasources/room" />
+            <option value="$PROJECT_DIR$/data/books/impl/datasources/yandex_cloud" />
             <option value="$PROJECT_DIR$/data/books/mock" />
             <option value="$PROJECT_DIR$/data/settings" />
             <option value="$PROJECT_DIR$/data/settings/impl" />

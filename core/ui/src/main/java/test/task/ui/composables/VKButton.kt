@@ -27,7 +27,7 @@ fun VKButton(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(30.dp))
-            .background(colorResource(colorScheme.vkBackground))
+            .background(colorResource(colorScheme.logInVkBg))
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {

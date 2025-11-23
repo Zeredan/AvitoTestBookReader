@@ -40,6 +40,8 @@ dependencies {
     implementation(project(":domain:auth"))
     implementation(project(":data:auth:impl:datasources"))
     implementation(project(":data:auth:impl:datasources:firebase"))
+
+    implementation(project(":data:books:impl:datasources")) //ПРОСТИТЕ ЗА ЭТО! я знаю, надо переместить в core:data и все такое, чтобы было чисто. Это общий датасоурс
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

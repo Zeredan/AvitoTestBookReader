@@ -20,7 +20,6 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val getAuthStateUseCase: GetAuthStateUseCase,
     private val loginOrSignUpUseCase: LoginOrSignUpUseCase,
-    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Loading)
     val authState = _authState.asStateFlow()

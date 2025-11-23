@@ -34,9 +34,8 @@ class BooksRepositoryImpl @Inject constructor(
     private val remoteMetaDs: BooksRemoteMetadataDataSource,
     private val remoteFileDs: BooksRemoteDataSource,
     private val authRepository: AuthRepository,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BooksRepository {
-
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getBooksAsFlow(): Flow<List<Book>> {
         return authRepository.getAuthStateAsFlow()
