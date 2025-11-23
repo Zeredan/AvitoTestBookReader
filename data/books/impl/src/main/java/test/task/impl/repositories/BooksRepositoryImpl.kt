@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import test.task.auth.AuthState
 import test.task.auth.repositories.AuthRepository
@@ -72,81 +73,67 @@ class BooksRepositoryImpl @Inject constructor(
                     }
 
                     else -> {
-                        localMetaDs.getBooksAsFlow()
+                        localMetaDs.getBooksAsFlow().map { local ->
+                            val localErrors = local.filter {
+                                it.localPath == null || localFilesDs.getFile(it.localPath!!) == null
+                            }
+                            if (localErrors.isNotEmpty()) localMetaDs.deleteBooks(localErrors.map { it.id })
+                            val localExisting = local.filter {
+                                it.localPath != null &&
+                                        localFilesDs.getFile(it.localPath!!) != null
+                            }
+                            localExisting
+                        }
                     }
                 }
             }
-    }
-
-    override suspend fun refreshBooks() = withContext(ioDispatcher) {
-
-    }
-
-    override suspend fun getBookById(bookId: String): Book? {
-        val local = localMetaDs.getBookById(bookId)
-        val remote = remoteMetaDs.getBookById(bookId)
-
-        return when {
-            local != null -> local
-            remote != null -> remote
-            else -> null
-        }
     }
 
     override suspend fun uploadBook(
         title: String,
         author: String?,
         fileUri: Uri
-    ): Result<Book> = withContext(ioDispatcher) {
-        try {
-            val mime = appContext.contentResolver.getType(fileUri)
-            val format = mime?.let { BookFormat.fromMimeType(it) } ?: BookFormat.TXT
-            val ext = BookFormat.toExt(format)
+    ): Book = withContext(ioDispatcher) {
+        val mime = appContext.contentResolver.getType(fileUri)
+        val format = mime?.let { BookFormat.fromMimeType(it) } ?: BookFormat.TXT
+        val ext = BookFormat.toExt(format)
 
-            val fileName = "${title}_${author ?: "Неизвестный автор"}.$ext"
+        val fileName = "${title}_${author ?: "Неизвестный автор"}.$ext"
 
-            val uid = when (val auth = authRepository.getAuthStateAsFlow().first()) {
-                is AuthState.Success -> auth.user.uid
-                else -> return@withContext Result.failure(
-                    IllegalStateException("User is not authenticated")
-                )
-            }
-
-            val savedFile = appContext.contentResolver.openInputStream(fileUri)?.use {
-                localFilesDs.saveFile(it, fileName)
-            } ?: return@withContext Result.failure(
-                IllegalStateException("Failed to read file Uri")
-            )
-
-            val uploadResult = remoteFileDs.uploadFile(
-                fileUri = savedFile.toUri(),
-                userId = uid,
-                fileName = title
-            ).getOrThrow()
-
-            val book = Book(
-                id = "",
-                title = title,
-                author = author,
-                remoteUrl = uploadResult.url,
-                localPath = null,
-                format = BookFormat.fromMimeType(uploadResult.contentType) ?: BookFormat.TXT,
-                readProgress = 0f
-            )
-
-            val bookId = remoteMetaDs.addBook(book, uid)
-
-            val actualBook = book.copy(
-                id = bookId,
-                localPath = savedFile.path
-            )
-            localMetaDs.addBook(actualBook)
-
-            Result.success(actualBook)
-
-        } catch (e: Exception) {
-            Result.failure(e)
+        val uid = when (val auth = authRepository.getAuthStateAsFlow().first()) {
+            is AuthState.Success -> auth.user.uid
+            else -> throw IllegalStateException("User is not authenticated")
         }
+
+        val savedFile = appContext.contentResolver.openInputStream(fileUri)?.use {
+            localFilesDs.saveFile(it, fileName)
+        } ?: throw IllegalStateException("Failed to read file Uri")
+
+        val uploadResult = remoteFileDs.uploadFile(
+            fileUri = savedFile.toUri(),
+            userId = uid,
+            fileName = title
+        )
+
+        val book = Book(
+            id = "",
+            title = title,
+            author = author,
+            remoteUrl = uploadResult.url,
+            localPath = null,
+            format = BookFormat.fromMimeType(uploadResult.contentType) ?: BookFormat.TXT,
+            readProgress = 0f
+        )
+
+        val bookId = remoteMetaDs.addBook(book, uid)
+
+        val actualBook = book.copy(
+            id = bookId,
+            localPath = savedFile.path
+        )
+        localMetaDs.addBook(actualBook)
+
+        actualBook
     }
 
 
@@ -201,6 +188,21 @@ class BooksRepositoryImpl @Inject constructor(
         localMetaDs.getBookById(bookId)?.let {
             it.localPath?.let { path -> localFilesDs.deleteFile(path) }
             localMetaDs.deleteBook(bookId)
+        }
+    }
+
+    override suspend fun refreshBooks() = withContext(ioDispatcher) {
+
+    }
+
+    override suspend fun getBookById(bookId: String): Book? {
+        val local = localMetaDs.getBookById(bookId)
+        val remote = remoteMetaDs.getBookById(bookId)
+
+        return when {
+            local != null -> local
+            remote != null -> remote
+            else -> null
         }
     }
 

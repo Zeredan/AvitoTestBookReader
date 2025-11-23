@@ -42,53 +42,45 @@ class BooksRemoteDataSourceYandexCloudImpl @Inject constructor(
         fileUri: Uri,
         userId: String,
         fileName: String
-    ): Result<StorageResult> = withContext(Dispatchers.IO) {
-        try {
-            val objectKey = "$userId/$fileName"
+    ): StorageResult = withContext(Dispatchers.IO) {
+        val objectKey = "$userId/$fileName"
 
-            val input = context.contentResolver.openInputStream(fileUri)
-                ?: return@withContext Result.failure(Exception("Unable to open file URI"))
+        val input = context.contentResolver.openInputStream(fileUri)
+            ?: throw Exception("Unable to open file URI")
 
-            val bytes = input.readBytes()
-            val sha256 = bytes.sha256Hex()
+        val bytes = input.readBytes()
+        val sha256 = bytes.sha256Hex()
 
-            val headers = AwsV4Signer.sign(
-                method = "PUT",
-                bucket = config.bucket,
-                region = config.region,
-                endpoint = endpoint,
-                objectKey = objectKey,
-                accessKey = config.accessKey,
-                secretKey = config.secretKey,
-                contentSha256 = sha256,
-                headers = mutableMapOf()
-            )
+        val headers = AwsV4Signer.sign(
+            method = "PUT",
+            bucket = config.bucket,
+            region = config.region,
+            endpoint = endpoint,
+            objectKey = objectKey,
+            accessKey = config.accessKey,
+            secretKey = config.secretKey,
+            contentSha256 = sha256,
+            headers = mutableMapOf()
+        )
 
-            val req = Request.Builder()
-                .url("https://${config.bucket}.$endpoint/$objectKey")
-                .put(bytes.toRequestBody(null))
-                .apply { headers.forEach { addHeader(it.key, it.value) } }
-                .build()
+        val req = Request.Builder()
+            .url("https://${config.bucket}.$endpoint/$objectKey")
+            .put(bytes.toRequestBody(null))
+            .apply { headers.forEach { addHeader(it.key, it.value) } }
+            .build()
 
-            val resp = http.newCall(req).execute()
+        val resp = http.newCall(req).execute()
 
-            if (!resp.isSuccessful)
-                return@withContext Result.failure(Exception("Upload failed: ${resp.code}"))
+        if (!resp.isSuccessful) throw Exception("Upload failed: ${resp.code}")
 
-            val url = "https://${config.bucket}.$endpoint/$objectKey"
+        val url = "https://${config.bucket}.$endpoint/$objectKey"
 
-            Result.success(
-                StorageResult(
-                    url = url,
-                    fileName = fileName,
-                    size = bytes.size.toLong(),
-                    contentType = resp.header("Content-Type") ?: "application/octet-stream"
-                )
-            )
-
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        StorageResult(
+            url = url,
+            fileName = fileName,
+            size = bytes.size.toLong(),
+            contentType = resp.header("Content-Type") ?: "application/octet-stream"
+        )
     }
 
     override suspend fun downloadFile(
@@ -156,7 +148,7 @@ class BooksRemoteDataSourceYandexCloudImpl @Inject constructor(
 
 
 
-    override suspend fun deleteFile(fileUrl: String): Result<Unit> = withContext(Dispatchers.IO) {
+    override suspend fun deleteFile(fileUrl: String) = withContext(Dispatchers.IO) {
         try {
             val bucket = config.bucket
             val objectKey = fileUrl.substringAfter("$bucket.$endpoint/")
@@ -180,13 +172,10 @@ class BooksRemoteDataSourceYandexCloudImpl @Inject constructor(
                 .build()
 
             val resp = http.newCall(req).execute()
-            if (!resp.isSuccessful)
-                return@withContext Result.failure(Exception("Delete failed: ${resp.code}"))
-
-            Result.success(Unit)
+            if (!resp.isSuccessful) throw Exception("Delete failed: ${resp.code}")
 
         } catch (e: Exception) {
-            Result.failure(e)
+            throw e
         }
     }
 

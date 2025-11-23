@@ -12,6 +12,9 @@ import javax.inject.Inject
 class UploaderViewModel @Inject constructor(
     private val uploadBookUseCase: UploadBookUseCase
 ) : ViewModel(){
+    private val _isValid = MutableStateFlow(false)
+    val isValid = _isValid.asStateFlow()
+
     private val _author = MutableStateFlow("")
     val author = _author.asStateFlow()
 
@@ -33,5 +36,7 @@ class UploaderViewModel @Inject constructor(
         _fileUri.value = value
     }
 
-
+    fun checkValidity(){
+        _isValid.value = _author.value.isNotEmpty() && _title.value.isNotEmpty() && _fileUri.value != null
+    }
 }

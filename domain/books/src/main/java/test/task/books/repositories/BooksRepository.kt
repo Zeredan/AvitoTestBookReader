@@ -7,7 +7,7 @@ import java.io.File
 
 interface BooksRepository {
     fun getBooksAsFlow(): Flow<List<Book>>
-    suspend fun uploadBook(title: String, author: String?, fileUri: Uri): Result<Book>
+    suspend fun uploadBook(title: String, author: String?, fileUri: Uri): Book
     suspend fun downloadBook(book: Book): Flow<DownloadProgress>
     suspend fun deleteLocalBook(bookId: String)
     suspend fun deleteRemoteBook(bookId: String)

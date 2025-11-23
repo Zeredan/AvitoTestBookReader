@@ -6,9 +6,9 @@ import test.task.books.repositories.DownloadProgress
 import java.io.File
 
 interface BooksRemoteDataSource {
-    suspend fun uploadFile(fileUri: Uri, userId: String, fileName: String): Result<StorageResult>
+    suspend fun uploadFile(fileUri: Uri, userId: String, fileName: String): StorageResult
     suspend fun downloadFile(fileUrl: String, destination: File): Flow<DownloadProgress>
-    suspend fun deleteFile(fileUrl: String): Result<Unit>
+    suspend fun deleteFile(fileUrl: String)
     suspend fun getFileUrl(filePath: String): String?
 }
 

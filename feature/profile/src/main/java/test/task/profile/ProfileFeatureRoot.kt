@@ -176,6 +176,7 @@ fun ProfileFeatureRoot(
                     fontWeight = FontWeight.W500,
                 )
             }
+            Spacer(Modifier.height(16.dp))
             Spacer(Modifier.weight(1f))
             if (!isEditing) {
                 Box(
@@ -246,7 +247,26 @@ fun ProfileFeatureRoot(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = photoUri?.toString() ?: stringResource(R.string.photo_upload),
+                        text = stringResource(R.string.photo_upload),
+                        fontSize = 14.sp,
+                        color = colorResource(colorScheme.textPrimary),
+                        fontFamily = robotoFontFamily,
+                        fontWeight = FontWeight.W600,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                Spacer(Modifier.height(16.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                        .background(colorResource(colorScheme.photoBg))
+                        .padding(8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = photoUri?.toString() ?: "...",
                         fontSize = 14.sp,
                         color = colorResource(colorScheme.textPrimary),
                         fontFamily = robotoFontFamily,
@@ -300,6 +320,7 @@ fun ProfileFeatureRoot(
                     },
                     shape = RoundedCornerShape(5.dp)
                 )
+                Spacer(Modifier.height(16.dp))
             }
             Spacer(Modifier.weight(1f))
             Box(

@@ -31,7 +31,8 @@ enum class AvitoColorScheme(
     @ColorRes val logInOkBg2_rt: Int,
     //Цвета UPLOADER
     @ColorRes val fileChooserBg: Int,
-    @ColorRes val uploadBg: Int,
+    @ColorRes val uploadBgActive: Int,
+    @ColorRes val uploadBgInactive: Int,
     //Цвета BOOKS
     @ColorRes val booksListBg: Int,
     @ColorRes val bookCardBg: Int,
@@ -76,7 +77,8 @@ enum class AvitoColorScheme(
         logInOkBg2_rt = R.color.light_login_ok_bg2_rt,
 
         fileChooserBg = R.color.light_filechooser_bg,
-        uploadBg = R.color.light_upload_bg,
+        uploadBgActive = R.color.light_login_active_bg,
+        uploadBgInactive = R.color.light_login_inactive_bg,
 
         booksListBg = R.color.light_books_list_bg,
         bookCardBg = R.color.light_book_card_bg,
@@ -122,7 +124,8 @@ enum class AvitoColorScheme(
         logInOkBg2_rt = R.color.dark_login_ok_bg2_rt,
 
         fileChooserBg = R.color.dark_filechooser_bg,
-        uploadBg = R.color.dark_upload_bg,
+        uploadBgActive = R.color.dark_login_active_bg,
+        uploadBgInactive = R.color.dark_login_inactive_bg,
 
         booksListBg = R.color.dark_books_list_bg,
         bookCardBg = R.color.dark_book_card_bg,

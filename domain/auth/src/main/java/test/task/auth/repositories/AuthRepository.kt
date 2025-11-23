@@ -15,5 +15,5 @@ interface AuthRepository {
         name: String,
         photoUrl: String?,
         phoneNumber: String,
-    ): Result<Unit>
+    )
 }

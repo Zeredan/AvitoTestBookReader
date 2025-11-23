@@ -31,18 +31,23 @@ class AuthRepositoryImpl @Inject constructor(
         name: String,
         photoUrl: String?,
         phoneNumber: String
-    ): Result<Unit> {
+    ) {
         val auth = authDatasource.getAuthStateAsFlow().first()
         if (auth is AuthState.Success) {
-            val result = booksRemoteDataSource.uploadFile(Uri.parse(photoUrl), auth.user.uid, photoUrl?.substringAfterLast('/')?.takeLast(10) ?: "profile_photo")
-            return if (result.isSuccess) {
-                authDatasource.updateUserProfile(name, result.getOrNull()?.url, phoneNumber)
+            if (photoUrl != null) {
+                try {
+                    val result = booksRemoteDataSource.uploadFile(
+                        Uri.parse(photoUrl),
+                        auth.user.uid,
+                        photoUrl.substringAfterLast('/').takeLast(10)
+                    )
+                    authDatasource.updateUserProfile(name, result.url, phoneNumber)
+                } catch (e: Exception) {
+                    authDatasource.updateUserProfile(name, null, phoneNumber)
+                }
             } else {
                 authDatasource.updateUserProfile(name, null, phoneNumber)
-                Result.failure(Exception("cant upload photo"))
             }
-        } else {
-            return Result.failure(Exception("user not logged in"))
         }
     }
 }

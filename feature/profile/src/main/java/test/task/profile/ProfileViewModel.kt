@@ -60,12 +60,22 @@ class ProfileViewModel @Inject constructor(
         _isEditing.value = false
     }
 
+    fun isPhoneValid(phone: String): Boolean{
+        return Regex("^\\+?([0-9]{1,4})[-\\s]?([0-9]{1,15})$").matches(phone)
+    }
+
     fun saveChanges() {
-        if (nickName.value.isEmpty() && phoneNumber.value.isEmpty()) return
         viewModelScope.launch {
-            _isLoading.value = true
-            updateUserUseCase(nickName.value, _imageUri.value.toString(), phoneNumber.value)
-            _isLoading.value = false
+            val auth = authState.value
+            if (auth is AuthState.Success) {
+                _isLoading.value = true
+                updateUserUseCase(
+                    name = nickName.value.takeIf { it.isNotEmpty() } ?: auth.user.displayName ?: "???",
+                    photoUri =_imageUri.value.toString(),
+                    phoneNumber.value.takeIf { it.isNotEmpty() && isPhoneValid(it) } ?: auth.user.phoneNumber ?: "???"
+                )
+                _isLoading.value = false
+            }
         }
     }
 

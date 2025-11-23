@@ -12,5 +12,5 @@ class UploadBookUseCase @Inject constructor(
         title: String,
         author: String?,
         fileUri: Uri
-    ): Result<Book> = repository.uploadBook(title, author, fileUri)
+    ): Book = repository.uploadBook(title, author, fileUri)
 }

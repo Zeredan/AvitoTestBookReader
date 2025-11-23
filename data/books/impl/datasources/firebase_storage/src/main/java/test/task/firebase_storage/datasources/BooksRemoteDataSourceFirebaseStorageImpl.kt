@@ -18,7 +18,7 @@ class BooksRemoteDataSourceFirebaseStorageImpl @Inject constructor(
     private val storage: FirebaseStorage
 ) : BooksRemoteDataSource {
 
-    override suspend fun uploadFile(fileUri: Uri, userId: String, fileName: String): Result<StorageResult> =
+    override suspend fun uploadFile(fileUri: Uri, userId: String, fileName: String): StorageResult =
         suspendCancellableCoroutine { cont ->
             val ref = storage.reference.child("users/$userId/books/$fileName")
             val uploadTask = ref.putFile(fileUri)
@@ -30,9 +30,9 @@ class BooksRemoteDataSourceFirebaseStorageImpl @Inject constructor(
                         size = snapshot.metadata?.sizeBytes ?: 0L,
                         contentType = snapshot.metadata?.contentType ?: "application/octet-stream"
                     )
-                    cont.resume(Result.success(result))
-                }.addOnFailureListener { cont.resume(Result.failure(it)) }
-            }.addOnFailureListener { cont.resume(Result.failure(it)) }
+                    cont.resume(result)
+                }.addOnFailureListener { throw it }
+            }.addOnFailureListener { throw it }
         }
 
     override suspend fun downloadFile(fileUrl: String, destination: File): Flow<DownloadProgress> =
@@ -54,11 +54,11 @@ class BooksRemoteDataSourceFirebaseStorageImpl @Inject constructor(
             awaitClose { task.cancel() }
         }
 
-    override suspend fun deleteFile(fileUrl: String): Result<Unit> = suspendCancellableCoroutine { cont ->
+    override suspend fun deleteFile(fileUrl: String) = suspendCancellableCoroutine { cont ->
         val ref = storage.getReferenceFromUrl(fileUrl)
         ref.delete()
-            .addOnSuccessListener { cont.resume(Result.success(Unit)) }
-            .addOnFailureListener { cont.resume(Result.failure(it)) }
+            .addOnSuccessListener { cont.resume(Unit) }
+            .addOnFailureListener { throw it }
     }
 
     override suspend fun getFileUrl(filePath: String): String? {
