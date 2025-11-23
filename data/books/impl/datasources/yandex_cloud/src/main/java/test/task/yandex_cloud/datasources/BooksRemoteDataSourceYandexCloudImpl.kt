@@ -19,6 +19,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okio.buffer
 import okio.sink
 import okio.source
+import okio.use
 import test.task.books.repositories.DownloadProgress
 import test.task.datasources.BooksRemoteDataSource
 import test.task.datasources.StorageResult
@@ -43,44 +44,47 @@ class BooksRemoteDataSourceYandexCloudImpl @Inject constructor(
         userId: String,
         fileName: String
     ): StorageResult = withContext(Dispatchers.IO) {
+        //val ext = fileUri.toString().substringAfterLast(".")
         val objectKey = "$userId/$fileName"
+        println("UIUI 1 $objectKey ||| $fileUri")
 
         val input = context.contentResolver.openInputStream(fileUri)
             ?: throw Exception("Unable to open file URI")
+        input.use {
+            val bytes = input.readBytes()
+            val sha256 = bytes.sha256Hex()
 
-        val bytes = input.readBytes()
-        val sha256 = bytes.sha256Hex()
+            val headers = AwsV4Signer.sign(
+                method = "PUT",
+                bucket = config.bucket,
+                region = config.region,
+                endpoint = endpoint,
+                objectKey = objectKey,
+                accessKey = config.accessKey,
+                secretKey = config.secretKey,
+                contentSha256 = sha256,
+                headers = mutableMapOf()
+            )
 
-        val headers = AwsV4Signer.sign(
-            method = "PUT",
-            bucket = config.bucket,
-            region = config.region,
-            endpoint = endpoint,
-            objectKey = objectKey,
-            accessKey = config.accessKey,
-            secretKey = config.secretKey,
-            contentSha256 = sha256,
-            headers = mutableMapOf()
-        )
+            val req = Request.Builder()
+                .url("https://${config.bucket}.$endpoint/$objectKey")
+                .put(bytes.toRequestBody(null))
+                .apply { headers.forEach { addHeader(it.key, it.value) } }
+                .build()
 
-        val req = Request.Builder()
-            .url("https://${config.bucket}.$endpoint/$objectKey")
-            .put(bytes.toRequestBody(null))
-            .apply { headers.forEach { addHeader(it.key, it.value) } }
-            .build()
+            val resp = http.newCall(req).execute()
 
-        val resp = http.newCall(req).execute()
+            if (!resp.isSuccessful) throw Exception("Upload failed: ${resp.code} (Вероятно ошибка в имени - сделай только английские буквы и цифры)")
 
-        if (!resp.isSuccessful) throw Exception("Upload failed: ${resp.code}")
+            val url = "https://${config.bucket}.$endpoint/$objectKey"
 
-        val url = "https://${config.bucket}.$endpoint/$objectKey"
-
-        StorageResult(
-            url = url,
-            fileName = fileName,
-            size = bytes.size.toLong(),
-            contentType = resp.header("Content-Type") ?: "application/octet-stream"
-        )
+            StorageResult(
+                url = url,
+                fileName = fileName,
+                size = bytes.size.toLong(),
+                contentType = resp.header("Content-Type") ?: "application/octet-stream"
+            )
+        }
     }
 
     override suspend fun downloadFile(

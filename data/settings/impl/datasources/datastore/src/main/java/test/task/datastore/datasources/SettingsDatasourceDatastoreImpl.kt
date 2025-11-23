@@ -18,6 +18,8 @@ class SettingsDatasourceDatastoreImpl @Inject constructor(
 ) : SettingsDatasource{
     private object PreferencesKeys {
         val APP_THEME = androidx.datastore.preferences.core.stringPreferencesKey("app_theme")
+        val FONT_SIZE = androidx.datastore.preferences.core.floatPreferencesKey("font_size")
+        val ROW_INTERVAL = androidx.datastore.preferences.core.floatPreferencesKey("row_interval")
     }
 
     override suspend fun setAppTheme(value: AvitoTheme) {
@@ -41,6 +43,30 @@ class SettingsDatasourceDatastoreImpl @Inject constructor(
                 Configuration.UI_MODE_NIGHT_UNDEFINED -> AvitoTheme.DARK
                 else -> AvitoTheme.DARK //я за темную тему
             }
+        }
+    }
+
+    override suspend fun setFontSize(value: Float) {
+        dataStore.edit {
+            it[PreferencesKeys.FONT_SIZE] = value
+        }
+    }
+
+    override fun getFontSizeAsFlow(): Flow<Float> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferencesKeys.FONT_SIZE] ?: 14f
+        }
+    }
+
+    override suspend fun setRowInterval(value: Float) {
+        dataStore.edit {
+            it[PreferencesKeys.ROW_INTERVAL] = value
+        }
+    }
+
+    override fun getRowIntervalAsFlow(): Flow<Float> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferencesKeys.ROW_INTERVAL] ?: 18f
         }
     }
 }

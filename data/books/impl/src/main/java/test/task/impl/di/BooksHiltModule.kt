@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class BooksRepositoryHiltModule {
+abstract class BooksHiltModule {
     @Binds
     @Singleton
     abstract fun bindBooksRepository(impl: BooksRepositoryImpl): BooksRepository

@@ -45,6 +45,8 @@ class ProfileViewModel @Inject constructor(
     val isEditing = _isEditing.asStateFlow()
 
     fun setNickName(name: String) {
+        val hasCyrillic = Regex("[А-Яа-яЁё]")
+        if (hasCyrillic.containsMatchIn(name)) return
         _nickName.value = name
     }
 
@@ -69,11 +71,17 @@ class ProfileViewModel @Inject constructor(
             val auth = authState.value
             if (auth is AuthState.Success) {
                 _isLoading.value = true
-                updateUserUseCase(
-                    name = nickName.value.takeIf { it.isNotEmpty() } ?: auth.user.displayName ?: "???",
-                    photoUri =_imageUri.value.toString(),
-                    phoneNumber.value.takeIf { it.isNotEmpty() && isPhoneValid(it) } ?: auth.user.phoneNumber ?: "???"
-                )
+                try {
+                    updateUserUseCase(
+                        name = nickName.value.takeIf { it.isNotEmpty() } ?: auth.user.displayName
+                        ?: "???",
+                        photoUri = _imageUri.value.toString(),
+                        phoneNumber.value.takeIf { it.isNotEmpty() && isPhoneValid(it) }
+                            ?: auth.user.phoneNumber ?: "???"
+                    )
+                } catch (e: Exception) {
+
+                }
                 _isLoading.value = false
             }
         }
@@ -93,7 +101,11 @@ class ProfileViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch {
-            logoutUseCase()
+            try {
+                logoutUseCase()
+            } catch (e: Exception) {
+
+            }
         }
     }
 }

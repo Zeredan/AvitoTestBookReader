@@ -45,6 +45,15 @@ android {
     buildFeatures {
         compose = true
     }
+    flavorDimensions += "books"
+    productFlavors {
+        create("real") {
+            dimension = "books"
+        }
+        create("mock") {
+            dimension = "books"
+        }
+    }
 }
 
 dependencies {
@@ -61,21 +70,25 @@ dependencies {
     implementation(project(":domain:settings"))
     implementation(project(":domain:auth"))
 
-    implementation(project(":data:settings:impl"))
-    implementation(project(":data:books:impl"))
-    implementation(project(":data:auth:impl"))
-
-//    val flavorName = project.gradle.startParameter.taskNames.joinToString().let {
-//        when {
-//            it.contains("Mock", ignoreCase = true) -> "mock"
-//            it.contains("Real", ignoreCase = true) -> "real"
-//            else -> "real" // По умолчанию реальный
-//        }
-//    }
-//    when (flavorName) {
-//        "mock" -> implementation(project(":data:courses:mock"))
-//        "real" -> implementation(project(":data:courses:impl"))
-//    }
+    val flavorName = project.gradle.startParameter.taskNames.joinToString().let {
+        when {
+            it.contains("Mock", ignoreCase = true) -> "mock"
+            it.contains("Real", ignoreCase = true) -> "real"
+            else -> "real"
+        }
+    }
+    when (flavorName) {
+        "mock" -> {
+            implementation(project(":data:settings:mock"))
+            implementation(project(":data:books:mock"))
+            implementation(project(":data:auth:mock"))
+        }
+        "real" -> {
+            implementation(project(":data:settings:impl"))
+            implementation(project(":data:books:impl"))
+            implementation(project(":data:auth:impl"))
+        }
+    }
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

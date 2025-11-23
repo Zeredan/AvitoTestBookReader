@@ -16,6 +16,7 @@ import test.task.avitotestbookreader.ui.MainNavigationRoot
 import test.task.settings.AvitoTheme
 import test.task.settings.usecases.UCGetAppThemeAsFlow
 import test.task.ui.themes.AvitoColorScheme
+import test.task.ui.themes.AvitoIconScheme
 import test.task.ui.themes.AvitoThemeManager
 import javax.inject.Inject
 
@@ -33,9 +34,9 @@ class MainActivity : ComponentActivity() {
                     AvitoTheme.DARK -> AvitoColorScheme.DARK
                     AvitoTheme.LIGHT -> AvitoColorScheme.LIGHT
                 }
-                AvitoThemeManager.colorScheme.value = when(appTheme){
-                    AvitoTheme.DARK -> AvitoColorScheme.DARK
-                    AvitoTheme.LIGHT -> AvitoColorScheme.LIGHT
+                AvitoThemeManager.iconScheme.value = when(appTheme){
+                    AvitoTheme.DARK -> AvitoIconScheme.DARK
+                    AvitoTheme.LIGHT -> AvitoIconScheme.LIGHT
                 }
                 AvitoThemeManager.isInitialized.value = true
             }

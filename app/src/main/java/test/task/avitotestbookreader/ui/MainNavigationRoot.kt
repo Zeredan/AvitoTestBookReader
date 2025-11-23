@@ -20,9 +20,11 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -33,6 +35,7 @@ import test.task.books.BooksFeatureRoot
 import test.task.profile.ProfileFeatureRoot
 import test.task.profile.ProfileViewModel
 import test.task.reader.ReaderFeatureRoot
+import test.task.reader.ReaderViewModel
 import test.task.splash.SplashFeatureRoot
 import test.task.ui.themes.AvitoThemeManager
 import test.task.uploader.UploaderFeatureRoot
@@ -49,6 +52,7 @@ fun MainNavigationRoot(
     // Создаю вьюмодели тут, а не внутри фичи - для предотвращения мерцания UI и пре-расчетов
     val authViewModel: AuthViewModel = hiltViewModel()
     val profileViewModel: ProfileViewModel = hiltViewModel()
+    val readerViewModel: ReaderViewModel = hiltViewModel()
     val colorScheme by AvitoThemeManager.colorScheme.collectAsState()
 
     //val selectedLanguage by settingsViewModel.selectedLanguageStateFlow.collectAsState()
@@ -116,7 +120,7 @@ fun MainNavigationRoot(
                     }
                 },
                 onBookClick = { id ->
-                    navController.navigate(ScreenState.READER) {
+                    navController.navigate("${ScreenState.READER}/$id") {
                         popUpTo(ScreenState.BOOKS) {
                             inclusive = false
                         }
@@ -168,8 +172,16 @@ fun MainNavigationRoot(
                 }
             )
         }
-        composable(ScreenState.READER) {
+        composable(
+            "${ScreenState.READER}/{bookId}",
+            arguments = listOf(
+                navArgument("bookId") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("bookId") ?: ""
             ReaderFeatureRoot(
+                bookId = id,
+                vm = readerViewModel,
                 onBack = {
                     navController.navigateUp()
                 }

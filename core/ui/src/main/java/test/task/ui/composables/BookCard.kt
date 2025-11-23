@@ -47,7 +47,9 @@ fun BookCard(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .background(colorResource(colorScheme.bookCardBg))
-            .clickable { onCardClick() }
+            .run{
+                if (isDownloaded) clickable { onCardClick() } else this
+            }
     ) {
         imageUrl?.let {
             AsyncImage(

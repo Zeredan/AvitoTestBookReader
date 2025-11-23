@@ -98,7 +98,7 @@ class BooksRepositoryImpl @Inject constructor(
         val format = mime?.let { BookFormat.fromMimeType(it) } ?: BookFormat.TXT
         val ext = BookFormat.toExt(format)
 
-        val fileName = "${title}_${author ?: "Неизвестный автор"}.$ext"
+        val fileName = "${title}_${author ?: "Неизвестный автор"}"
 
         val uid = when (val auth = authRepository.getAuthStateAsFlow().first()) {
             is AuthState.Success -> auth.user.uid
@@ -108,12 +108,13 @@ class BooksRepositoryImpl @Inject constructor(
         val savedFile = appContext.contentResolver.openInputStream(fileUri)?.use {
             localFilesDs.saveFile(it, fileName)
         } ?: throw IllegalStateException("Failed to read file Uri")
-
+        println("UIUI: | ${savedFile.absoluteFile}")
         val uploadResult = remoteFileDs.uploadFile(
             fileUri = savedFile.toUri(),
             userId = uid,
-            fileName = title
+            fileName = fileName
         )
+        println("UIUI: ${uploadResult.url} ||| ${savedFile.absoluteFile}")
 
         val book = Book(
             id = "",

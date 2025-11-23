@@ -227,6 +227,26 @@ fun ProfileFeatureRoot(
                         fontWeight = FontWeight.W600,
                     )
                 }
+                Spacer(Modifier.height(16.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(56.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(colorResource(colorScheme.discardChangesBg))
+                        .clickable {
+                            vm.stopEditing()
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.discard_changes),
+                        fontSize = 18.sp,
+                        color = colorResource(colorScheme.textPrimary),
+                        fontFamily = robotoFontFamily,
+                        fontWeight = FontWeight.W600,
+                    )
+                }
             }
             Spacer(Modifier.height(16.dp))
             if (isEditing) {
@@ -256,23 +276,25 @@ fun ProfileFeatureRoot(
                     )
                 }
                 Spacer(Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(colorResource(colorScheme.photoBg))
-                        .padding(8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = photoUri?.toString() ?: "...",
-                        fontSize = 14.sp,
-                        color = colorResource(colorScheme.textPrimary),
-                        fontFamily = robotoFontFamily,
-                        fontWeight = FontWeight.W600,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                photoUri?.toString()?.let { uri ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(colorResource(colorScheme.photoBg))
+                            .padding(8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = uri,
+                            fontSize = 14.sp,
+                            color = colorResource(colorScheme.textPrimary),
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.W600,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
                 Spacer(Modifier.height(16.dp))
                 TextField(

@@ -33,7 +33,7 @@ fun GoogleButton(
     ) {
         Image(
             modifier = Modifier
-                .size(26.dp, 16.dp),
+                .size(26.dp, 26.dp),
             painter = painterResource(iconScheme.iconGoogle),
             contentDescription = null
         )

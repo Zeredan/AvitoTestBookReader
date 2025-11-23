@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain:books"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

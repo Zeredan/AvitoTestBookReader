@@ -44,13 +44,10 @@ class AuthViewModel @Inject constructor(
     fun logInOrSignUp() {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
-            println("QQWE: email: ${email.value}, password: ${password.value}")
             try {
                 loginOrSignUpUseCase(email.value, password.value)
-                println("QQWE G")
             } catch (e: Exception) {
                 _authState.value = AuthState.Error(e.message ?: "Неизвестная ошибка")
-                print("QQWE E: $e")
             }
         }
     }
@@ -72,13 +69,18 @@ class AuthViewModel @Inject constructor(
         return regex.matches(email)
     }
     private fun isPasswordValid(password: String) : Boolean {
-        return password.length >= 5
+        return password.length >= 6
     }
     private fun validateInputs() {
         val emailValue = _email.value
         val passwordValue = _password.value
 
         _isInputsValid.value = (isEmailValid(emailValue) && isPasswordValid(passwordValue))
+    }
+
+    fun moveToGoogle(context: Context) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"))
+        context.startActivity(intent)
     }
 
     fun moveToVK(context: Context) {

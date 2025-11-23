@@ -7,4 +7,10 @@ interface SettingsRepository {
 
     suspend fun setAppTheme(value: AvitoTheme)
     fun getAppThemeAsFlow() : Flow<AvitoTheme>
+
+    suspend fun setFontSize(value: Float)
+    fun getFontSizeAsFlow() : Flow<Float>
+
+    suspend fun setRowInterval(value: Float)
+    fun getRowIntervalAsFlow() : Flow<Float>
 }

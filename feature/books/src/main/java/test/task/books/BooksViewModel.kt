@@ -14,13 +14,14 @@ import test.task.books.repositories.DownloadProgress
 import test.task.books.usecases.DeleteBookUseCase
 import test.task.books.usecases.DownloadBookUseCase
 import test.task.books.usecases.GetBooksAsFlowUseCase
+import test.task.books.usecases.UpdateBookProgressUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class BooksViewModel @Inject constructor(
     private val getBooksAsFlowUseCase: GetBooksAsFlowUseCase,
     private val downloadBookUseCase: DownloadBookUseCase,
-    private val deleteBookUseCase: DeleteBookUseCase
+    private val deleteBookUseCase: DeleteBookUseCase,
 ) : ViewModel(){
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()

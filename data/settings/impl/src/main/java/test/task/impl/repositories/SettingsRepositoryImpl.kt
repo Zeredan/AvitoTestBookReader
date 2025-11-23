@@ -17,4 +17,20 @@ class SettingsRepositoryImpl @Inject constructor(
         return settingsDatasource.getAppThemeAsFlow()
     }
 
+    override suspend fun setFontSize(value: Float) {
+        settingsDatasource.setFontSize(value)
+    }
+
+    override fun getFontSizeAsFlow(): Flow<Float> {
+        return settingsDatasource.getFontSizeAsFlow()
+    }
+
+    override suspend fun setRowInterval(value: Float) {
+        settingsDatasource.setRowInterval(value)
+    }
+
+    override fun getRowIntervalAsFlow(): Flow<Float> {
+        return settingsDatasource.getRowIntervalAsFlow()
+    }
+
 }

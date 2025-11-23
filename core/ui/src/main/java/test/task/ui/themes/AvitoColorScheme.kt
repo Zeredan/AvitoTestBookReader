@@ -4,7 +4,6 @@ import androidx.annotation.ColorRes
 import test.task.ui.R
 
 enum class AvitoColorScheme(
-    //Общие цвета
     @ColorRes val bgPrimary: Int,
     @ColorRes val textPrimary: Int,
     @ColorRes val textSecondary: Int,
@@ -18,10 +17,10 @@ enum class AvitoColorScheme(
     @ColorRes val loadingIndicator: Int,
     @ColorRes val progressBarFilled: Int,
     @ColorRes val progressBarUnfilled: Int,
+    @ColorRes val backArrowBg: Int,
 
-    //Цвета SPLASH
     @ColorRes val splashLogoBg: Int,
-    //Цвета AUTH
+
     @ColorRes val registerBg: Int,
     @ColorRes val logInBgActive: Int,
     @ColorRes val logInBgInactive: Int,
@@ -29,27 +28,29 @@ enum class AvitoColorScheme(
     @ColorRes val logInGoogleBg: Int,
     @ColorRes val logInOkBg1_lb: Int,
     @ColorRes val logInOkBg2_rt: Int,
-    //Цвета UPLOADER
+
     @ColorRes val fileChooserBg: Int,
     @ColorRes val uploadBgActive: Int,
     @ColorRes val uploadBgInactive: Int,
-    //Цвета BOOKS
+
     @ColorRes val booksListBg: Int,
     @ColorRes val bookCardBg: Int,
     @ColorRes val deleteBg: Int,
     @ColorRes val downloadBg: Int,
     @ColorRes val bookTitleText: Int,
     @ColorRes val bookAuthorText: Int,
-    //Цвета READER
+
     @ColorRes val AABg: Int,
     @ColorRes val pageBg: Int,
     @ColorRes val settingsBg: Int,
-    @ColorRes val themeMenuBg: Int,
-    //Цвета PROFILE
+    @ColorRes val themeBg: Int,
+    @ColorRes val themesMenuBg: Int,
+
     @ColorRes val photoBg: Int,
     @ColorRes val logoutBg: Int,
     @ColorRes val editBg: Int,
     @ColorRes val saveChangesBg: Int,
+    @ColorRes val discardChangesBg: Int
 ) {
     LIGHT(
         bgPrimary = R.color.light_bg_primary,
@@ -65,6 +66,7 @@ enum class AvitoColorScheme(
         loadingIndicator = R.color.light_loading_indicator,
         progressBarFilled = R.color.light_progress_filled,
         progressBarUnfilled = R.color.light_progress_unfilled,
+        backArrowBg = R.color.light_back_arrow_bg,
 
         splashLogoBg = R.color.light_splash_logo_bg,
 
@@ -77,8 +79,8 @@ enum class AvitoColorScheme(
         logInOkBg2_rt = R.color.light_login_ok_bg2_rt,
 
         fileChooserBg = R.color.light_filechooser_bg,
-        uploadBgActive = R.color.light_login_active_bg,
-        uploadBgInactive = R.color.light_login_inactive_bg,
+        uploadBgActive = R.color.light_upload_bg_active,
+        uploadBgInactive = R.color.light_upload_bg_inactive,
 
         booksListBg = R.color.light_books_list_bg,
         bookCardBg = R.color.light_book_card_bg,
@@ -90,12 +92,14 @@ enum class AvitoColorScheme(
         AABg = R.color.light_reader_aa_bg,
         pageBg = R.color.light_page_bg,
         settingsBg = R.color.light_settings_bg,
-        themeMenuBg = R.color.light_theme_menu_bg,
+        themeBg = R.color.light_theme_bg,
+        themesMenuBg = R.color.light_theme_menu_bg,
 
         photoBg = R.color.light_photo_bg,
         logoutBg = R.color.light_logout_bg,
         editBg = R.color.light_edit_bg,
-        saveChangesBg = R.color.light_save_changes_bg
+        saveChangesBg = R.color.light_save_changes_bg,
+        discardChangesBg = R.color.light_discard_changes_bg
     ),
 
     DARK(
@@ -112,6 +116,7 @@ enum class AvitoColorScheme(
         loadingIndicator = R.color.dark_loading_indicator,
         progressBarFilled = R.color.dark_progress_filled,
         progressBarUnfilled = R.color.dark_progress_unfilled,
+        backArrowBg = R.color.dark_register_bg,
 
         splashLogoBg = R.color.dark_splash_logo_bg,
 
@@ -124,8 +129,8 @@ enum class AvitoColorScheme(
         logInOkBg2_rt = R.color.dark_login_ok_bg2_rt,
 
         fileChooserBg = R.color.dark_filechooser_bg,
-        uploadBgActive = R.color.dark_login_active_bg,
-        uploadBgInactive = R.color.dark_login_inactive_bg,
+        uploadBgActive = R.color.dark_upload_bg_active,
+        uploadBgInactive = R.color.dark_upload_bg_inactive,
 
         booksListBg = R.color.dark_books_list_bg,
         bookCardBg = R.color.dark_book_card_bg,
@@ -137,11 +142,13 @@ enum class AvitoColorScheme(
         AABg = R.color.dark_reader_aa_bg,
         pageBg = R.color.dark_page_bg,
         settingsBg = R.color.dark_settings_bg,
-        themeMenuBg = R.color.dark_theme_menu_bg,
+        themeBg = R.color.dark_theme_bg,
+        themesMenuBg = R.color.dark_theme_menu_bg,
 
         photoBg = R.color.dark_photo_bg,
         logoutBg = R.color.dark_logout_bg,
         editBg = R.color.dark_edit_bg,
-        saveChangesBg = R.color.dark_save_changes_bg
+        saveChangesBg = R.color.dark_save_changes_bg,
+        discardChangesBg = R.color.dark_discard_changes_bg
     );
 }

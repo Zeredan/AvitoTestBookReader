@@ -39,6 +39,7 @@ dependencies {
     implementation(project(":feature"))
     implementation(project(":core:ui"))
     implementation(project(":domain:books"))
+    implementation(project(":domain:settings"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

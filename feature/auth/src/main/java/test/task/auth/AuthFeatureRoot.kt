@@ -208,7 +208,7 @@ fun AuthFeatureRoot(
                         .weight(1f)
                         .height(40.dp),
                     onClick = {
-                        vm.moveToVK(context)
+                        vm.moveToGoogle(context)
                     }
                 )
                 Spacer(Modifier.width(16.dp))
